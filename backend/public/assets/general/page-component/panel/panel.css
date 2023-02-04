@@ -1,0 +1,108 @@
+/* mobile first min-width sets base and content is adapted to computers. */
+@media (min-width: 100px) {
+    .panel-container {
+        flex-grow: 1;
+        border-radius: 40px;
+        /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.18);*/
+        /*max-width: 100%;*/
+        /*width: fit-content;*/
+        /*height: auto;*/
+        /*min-width: max-content;*/
+    }
+
+    .panel-header {
+        /*background: rgba(0, 0, 0, 0.20);*/
+        /*background: #e0e2e5;*/
+        background: rgba(46, 62, 80, 0.2);
+        /*border-top: 8px solid red;*/
+        overflow: hidden;
+        border-radius: 32px 32px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+    }
+
+    .panel-header h2 {
+        margin-top: 0;
+        margin-bottom: 0;
+        /*padding: 12px 20px 20px 20px;*/
+        padding: 20px;
+        color: #2e3e50;
+        font-size: 1.5em;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .panel-content {
+        padding: 7px;
+        height: auto;
+        overflow: hidden;
+        background: rgba(46, 62, 80, 0.10);
+        border-radius: 0 0 30px 30px;
+        /*border: 8px solid rgba(46, 62, 80, 0.2);*/
+        /*border-top: none;*/
+    }
+
+    .panel-content h3 {
+        font-size: 1.4em;
+        /*margin-top: 15px;*/
+        margin-bottom: 5px;
+    }
+
+    .panel-content a {
+        background: #ebecef;
+        padding: 2px;
+        border-radius: 5px;
+        color: #2e3e50;
+    }
+
+    .panel-content a:hover {
+        /* Without the important keyword it does not work. I think the specificity is in default.css is too high because
+         of the :not() selectors */
+        text-decoration: none !important;
+        background: #d0d2de;
+    }
+
+    /*Open / close toggle arrow*/
+    .toggle-panel-icon {
+        width: 35px;
+        transition: transform .3s;
+        cursor: pointer;
+        float: right;
+        margin-right: 20px;
+        padding: 9px 9px;
+        transform: rotateZ(180deg);
+    }
+
+    .panel-container.collapsed .toggle-panel-icon {
+        transform: rotateZ(0deg);
+    }
+
+    /*Collapsed panel*/
+    .panel-container.collapsed .panel-content {
+        max-height: 0;
+        min-height: 0 !important; /*Important otherwise user activity panel that has a min-height doesn't get overridden*/
+        /*Remove padding that was inside so that its fully collapsed*/
+        padding: 0;
+    }
+
+    .panel-container.collapsed .panel-header {
+        /*Make all borders rounded when collapsed*/
+        border-radius: 32px;
+    }
+}
+
+@media (min-width: 400px) {
+    /*Breakpoint at which side padding can be added and clients still have enough space*/
+    .panel-content {
+        padding: 20px;
+    }
+}
+
+@media (min-width: 641px) {
+    .panel-container {
+        /*min-width: 500px;*/
+        /*margin-right: 40px;*/
+    }
+}

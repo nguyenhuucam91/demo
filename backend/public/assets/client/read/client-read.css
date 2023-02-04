@@ -1,0 +1,380 @@
+/* mobile first min-width sets base and content is adapted to computers. */
+@media (min-width: 100px) {
+    #title-and-dropdown-flexbox {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 4vw;
+    }
+
+    .partial-personal-info-and-edit-icon-div {
+        padding-right: 13px;
+    }
+
+    #toggle-personal-info-edit-icons {
+        right: 10px;
+        top: 10px;
+        background: none;
+        border: none;
+        display: none;
+    }
+
+    #main-note-div {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap-reverse;
+        row-gap: 30px;
+        column-gap: 6%;
+    }
+
+    /*Style only direct div children*/
+    #main-note-div > div {
+    }
+
+    #status-and-assigned-user-select-container {
+        flex-grow: 1; /*Needed to display max-width fit-content*/
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        column-gap: 3vw;
+        row-gap: 20px;
+        /*height: min-content;*/
+        /* I wanted to do a nested flexbox (with both dropdowns) or grid that wraps before the container wraps
+        but it seems to be impossible currently unfortunately https://stackoverflow.com/q/32661535/9013718 */
+        margin: 0 auto 30px auto; /* Make it be on the top of right flex container and centered for mobile */
+    }
+
+    #main-note-textarea-div {
+        flex-grow: 100; /*Make it grow a lot more than the dropdown selects*/
+        min-width: 100%;
+        position: relative;
+    }
+
+    #main-note-textarea-div textarea {
+        border-radius: 20px;
+        border: 4px solid #2e3e50;
+        padding: 15px 45px 15px 25px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        /*box-shadow: 0 0px 20px 10px #ffdfa3;*/
+        background: rgba(46, 66, 80, 0.08);
+        /*background: #2e3e50;*/
+        color: #2e3e50;
+        font-size: 18px;
+        line-height: 23px;
+        width: 100%;
+    }
+
+    #main-note-textarea-div textarea:not([data-editable="0"]):focus {
+        /*color: #2e3e50;*/
+        /*border: 4px solid #9cbae3;*/
+        outline: #2e3e50;
+        box-shadow: 0 2px 10px rgba(46, 62, 80, 0.5);
+    }
+
+    #status-and-assigned-user-select-container select {
+        min-width: 100%;
+    }
+
+    /*Flex container containing notes under activity and personal infos */
+    #client-activity-personal-info-container {
+        display: flex;
+        flex-wrap: wrap-reverse;
+        flex-direction: row;
+        justify-content: space-between;
+        column-gap: 5vw;
+    }
+
+    #client-activity-personal-info-container > div {
+        flex-basis: 100%;
+    }
+
+    #client-note-wrapper {
+        /* Style to add checkmark icon on save source: https://stackoverflow.com/a/53123267/9013718 */
+        position: relative;
+        display: inline-block;
+    }
+
+    /*Note CSS in client-note.css*/
+
+    /*This grid places all the icons and their span value with the same space between icon and text*/
+    #client-personal-info-flex-container {
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        padding: 10px;
+        border-radius: 30px;
+        /*float: right;*/
+        height: auto;
+        margin: 26px 0 0 0; /* For the wrapped main textarea to not be too narrow same height as title */
+        box-shadow: 0 2px 7px rgba(0, 0, 0, 0.14);
+        align-self: start; /*Make it not expand to the same height as activity notes*/
+        position: relative; /*For absolute edit icon on mobile*/
+        width: 100%;
+    }
+
+    #client-personal-info-flex-container a, #client-personal-info-flex-container > div {
+        display: inline-grid;
+        grid-template-columns: 20px auto;
+        grid-row: auto;
+        grid-column-gap: 15px;
+        align-items: center;
+        padding: 5px 15px;
+        border-radius: 22px;
+        margin-top: 0px;
+        font-size: 20px;
+        white-space: nowrap;
+    }
+
+    #client-personal-info-flex-container strong {
+        /*Validation error msg line break */
+        overflow-wrap: anywhere;
+        white-space: break-spaces;
+    }
+
+    #client-personal-info-flex-container a span, #client-personal-info-flex-container > div span {
+        line-height: 25px;
+        padding: 5px;
+        display: inline-block;
+        white-space: break-spaces;
+        word-break: break-all; /*To wrap when editing span*/
+    }
+
+    #client-personal-info-flex-container select {
+        font-size: 17px;
+        display: none;
+    }
+
+    #client-personal-info-flex-container strong.err-msg, #full-header-edit-icon-container strong.err-msg {
+        /*Remove padding left on non-form fields*/
+        padding-left: 0;
+    }
+
+    #age-sub-span {
+        /*As its a nested span, the parent would have twice the padding */
+        padding: 0 !important;
+    }
+
+    /*mail prefix*/
+    #email-div span:nth-of-type(1) {
+        /*font-size: 19px;*/
+    }
+
+    /*mail suffix*/
+    #email-div span {
+        font-size: 18px;
+    }
+
+    /*Increase icon size*/
+    #client-personal-info-flex-container a img, #client-personal-info-flex-container > div img, .personal-info-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    #client-personal-info-flex-container a {
+        text-decoration: none;
+        /*Overflow wrap anywhere here, white-space: break-spaces; on the span makes the line break when too long
+        and word-break: break-all; on the span makes it break even when editing*/
+        overflow-wrap: anywhere;
+    }
+
+    #client-personal-info-flex-container a:hover:not(a.currently-editable) {
+        box-shadow: 0 2px 5px rgba(46, 66, 80, 0.12);
+        background: rgba(0, 0, 0, 0.05);
+        /*font-weight: bold;*/
+        text-decoration: none !important;
+    }
+
+    #add-client-personal-info-div {
+        /*margin-left: 13px;*/
+        padding: 6px;
+        border-radius: 30px;
+        box-shadow: 0 0px 9px rgba(46, 66, 80, 0.12);
+        /*border: 1px solid #d5d5d5;*/
+        height: 45px;
+        margin-top: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: max-width .3s ease;
+        overflow: hidden;
+        float: right;
+    }
+
+    #add-client-personal-info-div:hover {
+        max-width: 100%;
+        /*Increase left and right padding when open*/
+        padding: 6px 10px;
+        /*Along with js function openAvailableIconsDiv*/
+    }
+    /*Always hide + icon to show available icons on mobile as its always expanded */
+    #toggle-personal-info-icons{
+        display: none;
+    }
+
+    #add-client-personal-info-div img {
+        min-width: 34px;
+        height: 34px;
+        padding: 7px;
+        /*Increase width and height of 10px to cope for padding*/
+        border-radius: 10px;
+    }
+
+    #add-client-personal-info-div img:hover {
+        box-shadow: 0 2px 5px rgba(46, 66, 80, 0.12);
+        background: rgba(0, 0, 0, 0.11);
+        cursor: crosshair;
+    }
+
+    #add-client-personal-info-div img#toggle-personal-info-icons, #add-client-personal-info-div img#delete-client-btn,
+    #add-client-personal-info-div img#undelete-client-btn{
+        cursor: pointer;
+    }
+
+    #add-client-personal-info-div img#toggle-personal-info-icons:hover {
+        background: none;
+        box-shadow: none;
+    }
+
+    .client-note-loading-placeholder {
+        width: 100%;
+        min-width: 232px;
+        border-radius: 30px;
+        margin-bottom: 30px;
+    }
+
+    .client-note-upper-placeholder-container {
+        display: grid;
+        grid-template-columns: minmax(0, 190px) minmax(0, 130px);
+        grid-template-rows: auto;
+        justify-content: space-between;
+        margin: 0 20px 0 20px;
+        gap: 25px;
+        /*justify-items: end;*/
+    }
+
+    /* Target only first divs with >*/
+    .client-note-upper-placeholder-container > div {
+        height: 18px;
+    }
+
+    .client-note-upper-placeholder-container .moving-loading-placeholder-part-wrapper {
+        /* Lighten up the background color of this line as the background is white */
+        background-color: rgb(238, 238, 238);
+    }
+
+    .client-note-lower-placeholder-container {
+        /* Prevent the margin from parent and child to collapse https://stackoverflow.com/a/1939980/9013718 */
+        overflow: hidden;
+        margin-top: 10px;
+        height: 85px;
+        width: 100%;
+        background: rgb(245, 245, 245);
+        border-radius: 30px;
+    }
+
+    .client-note-first-text-line-placeholder {
+        width: 80%;
+        margin-top: 18px;
+    }
+
+    .client-note-second-text-line-placeholder {
+        width: 50%;
+        margin-top: 10px;
+    }
+}
+
+/* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+@media (min-width: 641px) {
+    #main-note-textarea-div {
+        /*For the flex items to wrap*/
+        min-width: 470px;
+    }
+
+    #client-personal-info-flex-container {
+        /*min-width: 255px;*/
+    }
+}
+
+/* last iPad portrait breakpoint is at 768 */
+@media (min-width: 768px) { /*If changed, breakpoint in */
+    #client-activity-personal-info-container {
+        flex-wrap: nowrap;
+        column-gap: 5vw;
+    }
+
+    #client-activity-personal-info-container > div {
+        /*For personal info container to not take more space than its content*/
+        flex-basis: auto;
+    }
+
+    #client-note-wrapper {
+        flex-grow: 1;
+    }
+
+    #client-personal-info-flex-container {
+        flex-grow: 0;
+        display: block; /*From display flex (wrap elements the easiest way) to inline-block for desktop */
+        max-width: 400px;
+        float: right;
+        width: fit-content;
+    }
+    /*Max width is removed if touch or mobile in client-read-personal-info.js*/
+    #add-client-personal-info-div {
+        max-width: 45px;
+    }
+    /*Only hide plus icon on hover (it is hidden if touch in client-read-personal-info.js*/
+    #toggle-personal-info-icons{
+        display: initial;
+    }
+    #add-client-personal-info-div:hover #toggle-personal-info-icons {
+        display: none;
+    }
+
+    #client-personal-info-flex-container a, #client-personal-info-flex-container div {
+        display: grid; /*From inline-grid to grid to prevent being on only one line for desktop*/
+    }
+}
+
+@media (min-width: 840px) {
+    #main-note-div {
+        margin-right: 4vw;
+    }
+
+    #status-and-assigned-user-select-container {
+        /*grid-template-columns: none;*/
+        justify-content: end;
+        flex-basis: auto;
+        margin-right: 4vw;
+    }
+
+    #client-activity-personal-info-container {
+        margin-right: 4vw;
+    }
+}
+
+/*@media (min-width: 818px) {*/
+/*    #status-and-assigned-user-select-container {*/
+/*        column-gap: 5vw;*/
+/*        margin-right: 4vw;*/
+/*    }*/
+/*}*/
+
+@media (min-width: 961px) {
+    /* tablet, landscape iPad, lo-res laptops ands desktops */
+    #client-activity-personal-info-container {
+        /*column-gap: 10vw;*/
+        margin-top: 0;
+    }
+}
+
+/*Very large screens*/
+@media (min-width: 1250px) {
+    #status-and-assigned-user-select-container {
+        /*grid-template-columns: 1fr 1fr;*/
+        column-gap: 5vw;
+    }
+
+    #main-note-div {
+        width: 70%;
+    }
+}
+

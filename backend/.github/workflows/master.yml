@@ -1,0 +1,91 @@
+name: 🚀 Deployment
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    name: Deploy PHP application
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          # extensions: mbstring, pdo, pdo_mysql, intl, zip
+          coverage: none
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /
+          exclude: |
+            .git*/**
+            docs/**
+            tests/**
+            
+      - name: Executing database migrations
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_KEY_PASSPHRASE }}
+          port: ${{ secrets.SSH_PORT }}
+          script: | 
+            cd ${{ secrets.DEMO_PROJECT_ROOT }}
+            chmod +x vendor/bin/phinx 
+            composer migrate
+
+      - name: ♥️ Sync files with care-point
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ secrets.CARE_POINT_FTP_HOST }}
+          username: ${{ secrets.CARE_POINT_FTP_USERNAME }}
+          password: ${{ secrets.CARE_POINT_FTP_PASSWORD }}
+          server-dir: /
+          exclude: |
+            .git*/**
+            docs/**
+            tests/**
+            config/env.prod.php
+            public/assets/favicon.ico
+
+      - name: Executing care-point database migrations
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.CARE_POINT_SSH_HOST }}
+          username: ${{ secrets.CARE_POINT_SSH_USERNAME }}
+          key: ${{ secrets.CARE_POINT_SSH_KEY }}
+          passphrase: ${{ secrets.CARE_POINT_SSH_KEY_PASSPHRASE }}
+          port: ${{ secrets.CARE_POINT_SSH_PORT }}
+          script: |
+           cd ${{ secrets.CARE_POINT_PROJECT_ROOT }}
+           chmod +x vendor/bin/phinx
+           composer migrate

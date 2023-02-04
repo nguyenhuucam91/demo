@@ -1,0 +1,96 @@
+name: 🧪 Build test
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+env:
+  APP_ENV: github
+
+jobs:
+  run:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ ubuntu-latest ]
+        php-versions: [ '8.1' ]
+        test-database: [ 'slim_example_project_test' ]
+    name: PHP ${{ matrix.php-versions }} Test
+
+    services:
+      mysql:
+        image: mysql:8.0.23
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+        ports:
+          - 33306:3306
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 #sonarcloud shallow clone warning https://stackoverflow.com/a/62500400/9013718
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, pdo, pdo_mysql, intl, zip
+          coverage: xdebug
+
+      - name: Check PHP version
+        run: php -v
+
+      - name: Check Composer version
+        run: composer -V
+
+      - name: Check PHP extensions
+        run: php -m
+
+      - name: Check MySQL version
+        run: mysql -V
+
+      - name: Start MySQL
+        run: sudo systemctl start mysql
+
+      - name: Check MySQL variables
+        run: mysql -uroot -proot -e "SHOW VARIABLES LIKE 'version%';"
+
+      - name: Set MySQL timezone to swiss time
+        run: mysql -uroot -proot -e "SET GLOBAL time_zone = '+01:00';"
+
+      - name: Increase max allowed packet size
+        run: mysql -uroot -proot -e "SET GLOBAL max_allowed_packet=1073741824;"
+
+      - name: Increase max connections
+        run: mysql -uroot -proot -e "SET GLOBAL max_connections = 4096;"
+
+      - name: Create database
+        run: mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS ${{ matrix.test-database }} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer update --no-ansi --no-interaction --no-progress
+
+      - name: Execute database migrations
+        run: composer migrate
+
+      - name: Show test db tables
+        run: mysql -uroot -proot -D ${{ matrix.test-database }} -e "SHOW TABLES;"
+
+      - name: Run test suite
+        run: composer test:coverage
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: 1
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

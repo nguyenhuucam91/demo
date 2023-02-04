@@ -1,0 +1,137 @@
+/* mobile first min-width sets base and content is adapted to computers. */
+@media (min-width: 100px) {
+    #dashboard-panel-toggle-buttons-div {
+        margin-bottom: 30px;
+    }
+
+    .checkbox-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        padding: 7px 15px;
+        background: #f1f1f1;
+        border: 3px solid #d5d5d5;
+        border-radius: 20px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+        /*Change native input style: https://moderncss.dev/pure-css-custom-checkbox-style*/
+        margin: 0;
+        min-width: 16px;
+        min-height: 16px;
+        /*Nudge it up half the width of the border*/
+        transform: translateY(-0.5px);
+        cursor: pointer;
+    }
+
+    .dashboard-panel-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+        align-items: start;
+        /*display: flex;*/
+        /*flex-wrap: wrap;*/
+        /*The Flexbox Holy Albatross https://heydonworks.com/article/the-flexbox-holy-albatross-reincarnated/*/
+        /*--modifier: calc(590px - 100%);*/
+        gap: 20px;
+        overflow: hidden;
+    }
+
+    .dashboard-panel-container > div {
+        /*This "magically" fixes grid items expanding over 100% of the available space */
+        min-width: 0; /* Source https://stackoverflow.com/a/43312314/9013718 */
+        /*flex-grow: 1;*/
+        /*flex-basis: calc(var(--modifier) * 999);*/
+    }
+
+    /*CLIENT PANELS*/
+    /*Shrink profile card so that it takes the least amount of space*/
+    .panel-content .client-wrapper {
+        margin-top: 5px;
+        justify-content: center;
+        gap: 20px 20px;
+    }
+
+    .panel-content .client-wrapper .client-profile-card {
+        font-size: initial;
+    }
+
+    .panel-content .profile-card-infos-flexbox, .panel-content .profile-card-assignee-and-status {
+        justify-content: space-around;
+    }
+
+    .panel-content .profile-card-infos-flexbox {
+        display: none;
+    }
+
+    .panel-content .profile-card-avatar {
+        width: 70px;
+        height: 70px;
+    }
+
+    /*NOTES PANEL*/
+    .client-note-wrapper > a {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    /*Remove panel link hover style for note textarea label*/
+    .textarea-label a:hover {
+        background: none;
+    }
+
+    /*User activity panel*/
+    #user-activity-panel .panel-content {
+        min-height: 200px;
+    }
+
+}
+
+
+@media (min-width: 641px) {
+    /*Switch between full width clients in panel to smallest width for side to side panels*/
+    .panel-content .client-wrapper .client-profile-card {
+        width: min-content;
+        /*font-size: initial;*/
+    }
+
+    .panel-content .client-wrapper .client-profile-card select {
+        font-size: 12px;
+        padding: 3px;
+    }
+
+    .panel-content .client-wrapper .client-profile-card h3 {
+        font-size: 1.2em;
+    }
+
+    .panel-content .client-wrapper .client-profile-card .profile-card-header {
+        padding-top: 10px;
+    }
+
+    /*Expand select full width*/
+    .profile-card-assignee-and-status div {
+        min-width: 90%;
+    }
+
+    /*    .dashboard-panel-container > div{
+            min-width: 590px;
+        }*/
+    .dashboard-panel-container {
+        grid-template-columns: repeat(auto-fit, minmax(590px, 1fr));
+    }
+}
+
+@media (min-width: 700px) {
+
+}
+
+@media (min-width: 1330px) {
+    .dashboard-panel-container {
+        /*grid-template-columns: auto auto;*/
+        /*grid-template-rows: auto auto;*/
+        /*grid-template-columns: repeat(auto-fit, minmax(min(100%, max(300px, 100% / 3 - 45px)), 1fr));*/
+    }
+
+}
